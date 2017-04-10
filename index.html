@@ -11,6 +11,9 @@
     		height: 100%;
     		width: 100%;
     	}
+    	body {
+    		overflow: auto;
+    	}
     	.pad {
     		flex-direction: column;
 		    justify-content: center;
@@ -21,7 +24,7 @@
 		    color: gray;
     	}
     	img {
-    		max-width: 100%;
+    		max-width: 75%;
     	}
     	::-webkit-scrollbar { 
 		    display: none; 
@@ -31,7 +34,7 @@
     <script type="text/javascript">
     /* ------------- */
     /* CONFIGURATION */
-    var stops = [0, 0.1, 0.5, 0.9, 1];
+    var stops = [0, 0.2, 0.4, 0.57, 0.76, 0.98];
     var scrollSpeed = 500;
 
     /* ------------- */
@@ -64,11 +67,11 @@
 					prev = 0;
 				}
 
-				// console.log("current state is", done, "at", docPos);
+				console.log("current state is", done, "at", docPos);
 
 				function scroll(percentage) {
 					var y = (percentage * imgHeight) + imgStart - docHeight;
-					// console.log("scrolling to", percentage, "at", y);
+					console.log("scrolling to", percentage, "at", y);
 					animatedScrollTo(document.documentElement, y, scrollSpeed);
 				}
 
@@ -80,7 +83,7 @@
 				}
 				event.preventDefault();
 			} else {
-				// console.log(event);
+				console.log(event);
 			}
 		});
 	});
@@ -88,6 +91,6 @@
   </head>
   <body>
   	<div class="pad">&darr;</div>
-    <img id="presentation" src="presentation.jpg">
+    	<center><img id="presentation" src="presentation.jpg"/></center>
   </body>
 </html>
