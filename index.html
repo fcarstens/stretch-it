@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Presentation</title>
+    <style type="text/css">
+    	html, body {
+    		margin: 0;
+    		height: 100%;
+    		width: 100%;
+    	}
+    	.pad {
+    		flex-direction: column;
+		    justify-content: center;
+		    height: 100%;
+		    display: flex;
+		    text-align: center;
+		    font-size: 80px;
+		    color: gray;
+    	}
+    	img {
+    		max-width: 100%;
+    	}
+    	::-webkit-scrollbar { 
+		    display: none; 
+		}
+    </style>
+    <script type="text/javascript" src="./animatedScrollTo.js"></script>
+    <script type="text/javascript">
+    /* ------------- */
+    /* CONFIGURATION */
+    var stops = [0, 0.1, 0.5, 0.9, 1];
+    var scrollSpeed = 500;
+
+    /* ------------- */
+    /* ------------- */
+    var NEXT_KEYS = [32 /*SPACE*/, 34 /*PAGE DOWN*/ , 39 /*RIGHT*/, 40 /*DOWN*/],
+        PREV_KEYS = [8 /*BACKSPACE*/, 33 /* PAGE UP*/, 37 /*LEFT*/, 38 /*UP*/];
+
+
+
+	document.addEventListener("DOMContentLoaded", function(event) {
+		var image = document.getElementById("presentation");
+		scrollTo(document.documentElement, 0);
+
+		document.addEventListener("keydown", function(event) {
+			var isNext = NEXT_KEYS.indexOf(event.keyCode) > -1,
+				isPrev = PREV_KEYS.indexOf(event.keyCode) > -1;
+			if(isNext || isPrev) {
+				var docPos = document.documentElement.scrollTop,
+					docHeight = document.documentElement.offsetHeight,
+					docBottom = docPos + docHeight,
+					imgStart = image.offsetTop,
+					imgHeight = image.height,
+					done = (docBottom - imgStart) / imgHeight,
+					prev;
+				if(isPrev) {
+					done -= 1 / imgHeight;
+					prev = 1;
+				} else {
+					done += 1 / imgHeight;
+					prev = 0;
+				}
+
+				// console.log("current state is", done, "at", docPos);
+
+				function scroll(percentage) {
+					var y = (percentage * imgHeight) + imgStart - docHeight;
+					// console.log("scrolling to", percentage, "at", y);
+					animatedScrollTo(document.documentElement, y, scrollSpeed);
+				}
+
+				for(var i=0; i < stops.length; i++) {
+					if(stops[i] > done){
+						scroll(stops[i - prev]);
+						break;
+					}
+				}
+				event.preventDefault();
+			} else {
+				// console.log(event);
+			}
+		});
+	});
+    </script>
+  </head>
+  <body>
+  	<div class="pad">&darr;</div>
+    <img id="presentation" src="presentation.jpg">
+  </body>
+</html>
